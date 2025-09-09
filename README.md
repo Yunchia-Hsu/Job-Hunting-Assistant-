@@ -4,6 +4,7 @@ A fully automated job hunting assistant powered by **n8n**, integrated with **Op
 It fetches new job listings, evaluates them against personal profile with scores, lets you approve the preferable jobs via Gmail, 
 the approved ones will continue to the automation to generate custom cover letters.
 
+<img width="1168" height="330" alt="image" src="https://github.com/user-attachments/assets/77ba39b0-f858-4931-9444-5a1e5b5e7c07" />
 
 ---
 
