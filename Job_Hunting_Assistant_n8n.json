@@ -1,0 +1,636 @@
+{
+  "name": "Demo: My first AI Agent in n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://rss.app/feeds/EFdJgynz1efFPaa1.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        -32
+      ],
+      "id": "ada325f7-8aa7-4ef8-a616-30f3908659e5",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "18eNKh2CO6phy4WhP84Uqr2PzYgI8x-2iaJlbqkaR0BU",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18eNKh2CO6phy4WhP84Uqr2PzYgI8x-2iaJlbqkaR0BU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "LinkedIn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18eNKh2CO6phy4WhP84Uqr2PzYgI8x-2iaJlbqkaR0BU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "cover letter": "=",
+            "rating": "={{ $('Message a model1').item.json.message.content }}",
+            "benefits": "={{ $('Message a model').item.json.message.content.benefits }}",
+            "job description": "={{ $('Message a model').item.json.message.content.job_description }}",
+            "location": "={{ $('Message a model').item.json.message.content.location }}",
+            "creator": "={{ $('RSS Read').item.json.creator }}",
+            "title": "={{ $('RSS Read').item.json.title }}",
+            "pubDate": "={{ $('RSS Read').item.json.pubDate }}",
+            "company name": "={{ $('Message a model').item.json.message.content.company_name }}",
+            "link": "={{ $('RSS Read').item.json.link }}"
+          },
+          "matchingColumns": [
+            "link"
+          ],
+          "schema": [
+            {
+              "id": "creator",
+              "displayName": "creator",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company name",
+              "displayName": "company name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pubDate",
+              "displayName": "pubDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "job description",
+              "displayName": "job description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "benefits",
+              "displayName": "benefits",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cover letter",
+              "displayName": "cover letter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1568,
+        -32
+      ],
+      "id": "b8fa163e-be46-46c8-8381-317f1fecf2cb",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "eKYTh37o49KFCNZs",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -32
+      ],
+      "id": "30ca6e36-9a20-458a-a616-78cffa7a9635",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        752,
+        -32
+      ],
+      "id": "662a2f44-8202-4b9a-895f-ab9cb2fc30a9",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "you are an brilliant bot capable of pulling out data from a job listing site.  ",
+              "role": "system"
+            },
+            {
+              "content": "=Here is the job site  {{ $('RSS Read').item.json.content }}and this is job secription:{{ $('RSS Read').item.json.contentSnippet }}"
+            },
+            {
+              "content": "Please pick the job output the data in Json format, using the following structure, the max word numbers is 200. : \n{\n\"company_name\":\"\",\n\"benefits\":\"\", //401k plan, salary, holidays, etc. please separate by commas\n\"job_description\": \"\",\n\"location\": \"\", //country, city\n\n} \n",
+              "role": "assistant"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        928,
+        -32
+      ],
+      "id": "0ef43b2c-6dd8-439d-b4f8-f72ae8d1f51c",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Ht80jeZhSUEfYCdn",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "you are an intelligent bot rating closely a job listing is to candidates skill set, on a 5 score.\n1. 1 point for it being the right experience level which is junior or entry\n2. 3 points for skills matching, 1 point for mostly matching\n3. 2 point for past job experience matching the job role\n4.1 point for the job in education, learning or edtech\n5. 3 points if it meet the job qualification on my resume",
+              "role": "system"
+            },
+            {
+              "content": "=Here is the job listing details: {{ $json.message.content.job_description }}\nHere is my resume :Supercell AI Hackathon 2025 -winner link (Gen AI integrated game）\nPassionate web developer familiar with React, Node.js, TypeScript and Docker, Open API, also leveraging cutting‑edge AI assistants to optimise workflows, automate testing, and enrich applications.\nActive learner and problem solver. Graduated from Hive Helsinki (peer and self learning school). \nStrong background in consulting, content planning, and project management, with a proven ability to actively define clients’ problems and deliver tailored solutions.\nActive volunteer work in both Taiwan and the UK.\n\nSKILLS \nProgramming language: TypeScript, Node.js, React, Python, C, C++\nTools & Systems: Docker, SQLite, Open API, REST API, Git (Version control), Valgrind, co-pilots, Cursor\nCoding Experience \nFull-stack Pong Game:   Contributed to a Node.js/TypeScript monorepo, implementing a Hono REST API documented via OpenAPI/Swagger UI; used Docker Compose for the API/DB and pnpm/Turbo for dev workflows (Node.js, Hono). \nPersonal AI Tutor: a full-stack side project integrated ChatGPT API to generate personal learning guidance and learning content.  It’s a dynamic language learning platform merging HTML/CSS/JS frontend, Flask/Python backend with GPT-4o and SQLite. \nJob Hunting Assistant (n8n): AI-automated job-application workflow; created CI/CD for build, deploy, and test.  (scraped relevant roles from job boards into Google Sheets, generated cover letters tailored to each posting and my résumé, routed drafts to email for manual review, and after revisions, approved and submitted the applications.)\nWeb Server: Developed a C++ web server using TCP sockets, socket API and multithreading, deepening my understanding of network protocols and resource management,  which are essential for building stable and reliable backend services.\nEDUCATION\nSep. 23 – Oct. 25\t\t\tHive Helsinki ( A coding school in Finland )\nKey Modules: Web server, 3D & 2D game; algorithm; custom bash-like shell (focus on C and C++)\n\nWORK EXPERIENCE\n2023 – Now                                  Product Consultant (Self-Employed)\n\t\t\t \n\t\t\tMain responsibilities:\nPartner with clients  to define target audiences, curate course content, and develop marketing strategies  by leveraging student analytics.\nProvide end‑to‑end support across production workflows, timelines, and feedback loops and tailored engagement tactics, ensuring seamless course launches ; also coach post‑launch adjustments, fostering continuous improvement based on real‑time student responses.\nProduct link : online course (the courses that exceeded sales targets by 20%)"
+            },
+            {
+              "content": "please return the score structured the following way\n{\n   \"score\": \"\",\n}",
+              "role": "assistant"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1248,
+        -32
+      ],
+      "id": "73ac41e3-65cc-420c-9d2f-2054bfacca30",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Ht80jeZhSUEfYCdn",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=you are an intelligent bot at creating cover letter for the job. please take my cv as reference and customised the cover letter to the job according to the job description.  {{ $('Message a model').item.json.message.content.job_description }} ",
+              "role": "system"
+            },
+            {
+              "content": "=Hello  Dear Hiring Manager,\nWhen I discovered the  position {{ $('RSS Read').item.json.title }} at {{ $('Message a model').item.json.message.content.company_name }}, I knew I had to apply.  This role perfectly aligns with my technical experience, personal interests, and long-term career goals. I'm excited about the opportunity to contribute my combined skills in web development growing fast with {{ $('Message a model').item.json.message.content.company_name }}. \nWhy I'm a Strong Fit:\nTechnical Foundation Through intensive self-study and projects at Hive Helsinki (peer-to-peer coding school), I've developed solid fundamentals in Node.js, TypeScript, React, Docker  and Git from my recent projects include a real-time multiplayer Fullstack pong game and a Personal AI tutor application integrating ChatGPT APIs. I've practiced test-driven development and understand the importance of clean, maintainable code.While I’m still building proficiency with your full, my strong foundation and proven learning agility give me confidence that I can quickly adapt.\nSolve problems under pressure: I am a person who is willing to take risks to lead a team and achieve an ambitious goal. This May I grouped my team to join Supercell AI Hackathon and won the first place. We built a  AI game development game within 36 hours. Of course our program broke on the last day, but we were able to stay calm, came up with several  solutions for the best and worst situation, and we were able to employed the vest solution and won the competition. The experience proved my problem-solving skills even in a stress and achieve the goal with flexibility.  Take ownership From my PM experience at LearMode (A learning platform company), I was  working in an Agile environment and am able to prioritize development tasks by clients’ needs. That course I created contributed to €350,000 in annual revenue. From the experience, I developed cross-cultural communication skills that would be valuable when collaborating with your diverse, international teams.   Supercell AI winning game\nWith growing mind set and take proactive action: I’m  passionate in learning new technology and tools and leverage them to  solve the problems. Learning by doing and build with real purpose is my 中心思想. Taking my “Job Hunting Assistant”  project for example: I am actively doing job hunting now, and  I found it is a repetitive process, so I built an application via AI agent tool N8N to automate the whole process. This solution not only saves me lots time but also let me learn to plan the user journey,  CI/CD pipeline, and deployment. "
+            },
+            {
+              "content": "return JASON data structured the following way\n{\n\"cover_letter\": \"\"\n}",
+              "role": "assistant"
+            }
+          ]
+        },
+        "simplify": false,
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1936,
+        -32
+      ],
+      "id": "f765ca1d-828f-4eaa-a359-eac79849683e",
+      "name": "Message a model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Ht80jeZhSUEfYCdn",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        176,
+        -32
+      ],
+      "id": "e1f5146a-93c9-4c8a-9355-3355eec390e8",
+      "name": "Schedule Trigger",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "yh24hsu@gmail.com",
+        "subject": "new jobs!!!!!",
+        "message": "={{ $('Message a model').item.json.message.content.company_name }}\n{{ $('RSS Read').item.json.title }}{{ $('Message a model1').item.json.message.content }}\n{{ $json.rating }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1760,
+        -32
+      ],
+      "id": "bdf271fb-c756-4326-b73d-f1b5e6af5001",
+      "name": "Send a message1",
+      "webhookId": "3e075d64-e5a2-430a-910f-6f724098256c",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ocPJsS3w7M62O1St",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "18eNKh2CO6phy4WhP84Uqr2PzYgI8x-2iaJlbqkaR0BU",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18eNKh2CO6phy4WhP84Uqr2PzYgI8x-2iaJlbqkaR0BU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "LinkedIn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18eNKh2CO6phy4WhP84Uqr2PzYgI8x-2iaJlbqkaR0BU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "cover letter": "={{ $json.choices[0].message.content.cover_letter }}",
+            "rating": "={{ $('Message a model1').item.json.message.content }}",
+            "benefits": "={{ $('Message a model').item.json.message.content.benefits }}",
+            "job description": "={{ $('Message a model').item.json.message.content.job_description }}",
+            "location": "={{ $('Message a model').item.json.message.content.location }}",
+            "creator": "={{ $('RSS Read').item.json.creator }}",
+            "title": "={{ $('RSS Read').item.json.title }}",
+            "pubDate": "={{ $('RSS Read').item.json.pubDate }}",
+            "company name": "={{ $('Message a model').item.json.message.content.company_name }}",
+            "link": "={{ $('RSS Read').item.json.link }}"
+          },
+          "matchingColumns": [
+            "link"
+          ],
+          "schema": [
+            {
+              "id": "creator",
+              "displayName": "creator",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "company name",
+              "displayName": "company name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pubDate",
+              "displayName": "pubDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "job description",
+              "displayName": "job description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "benefits",
+              "displayName": "benefits",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cover letter",
+              "displayName": "cover letter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2240,
+        -32
+      ],
+      "id": "70df7c68-a2a4-4a03-96ff-f1927a6b6eac",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "eKYTh37o49KFCNZs",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model2": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Message a model2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8c1a3d50-9a5f-45c0-803e-a2af877d67f9",
+  "meta": {
+    "templateId": "self-building-ai-agent",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ba2c6f4bdbed35513a47437ff981270250fdc2ac68cc9890d6717dd8af474049"
+  },
+  "id": "TJsi7eyunTgyXD80",
+  "tags": []
+}
