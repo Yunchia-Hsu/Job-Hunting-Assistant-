@@ -13,7 +13,7 @@ the approved ones will continue to the automation to generate custom cover lette
 * ⏰ **Runs twice daily** to fetch LinkedIn, jobs via RSS (scalable to more websites Glassdoor, Duunitori)
 * 🤖 **Parses job content** from HTML via HTTP Request + OpenAI
 * 📊 **Matches jobs with your profile** using OpenAI GPT
-* ✅ **Approval via Gmail** (one-click approve/decline)
+* ✅ **Approval via Telegram** (one-click approve/decline)
 * ✍️ **Generates personalized cover letters**
 * 📄 **Writes to Google Sheets**
 
@@ -24,7 +24,7 @@ the approved ones will continue to the automation to generate custom cover lette
 * `n8n` – Workflow Automation
 * `OpenAI GPT-4` – Matching & Cover Letter Generation
 * `Google Sheets, Docs, Gmail` – Output & Communication
-* `Docker` – Deployment
+* `Telegram Bot API` – Approval Flow
 
 ---
 
